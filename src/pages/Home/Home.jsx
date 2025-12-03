@@ -7,7 +7,7 @@ import BookingSection from '../../components/BookingSection';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import FloatingCart from '../../components/FloatingCart';
-import FloatingAI from '../../components/FloatingAi'; 
+import FloatingAI from '../../components/FloatingAI'; 
 import SloganWithCarousel from '../../components/SloganWithCarousel';
 
 const Home = ({ 
@@ -48,7 +48,7 @@ const Home = ({
         itemCount={cartItemsCount}
         onClick={onCartClick}
       />
-      <FloatingAi /> 
+      <FloatingAI /> 
     </>
   );
 };
