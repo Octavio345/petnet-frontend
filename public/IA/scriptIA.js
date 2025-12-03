@@ -10,6 +10,13 @@ class PetGPT {
         this.chatHeader = document.querySelector('.chat-header');
         this.optionButtons = document.querySelectorAll('.option-button');
         this.welcomeContainer = document.querySelector('.welcome-container');
+        
+        // ✅ CORREÇÃO CRÍTICA: URL do backend
+        this.API_URL = window.API_URL || import.meta.env?.VITE_API_URL || 'https://pet-net-backend.onrender.com';
+        
+        // Debug para verificar a URL
+        console.log('🔧 PetGPT inicializado com API_URL:', this.API_URL);
+        
         this.init();
     }
 
@@ -81,33 +88,60 @@ class PetGPT {
             
         } catch (error) {
             this.removeTypingIndicator();
-            this.addMessage('🐾 Oops! Estou com alguns probleminhas técnicos. Pode tentar novamente?', 'bot');
-            console.error('Erro:', error);
+            this.addMessage('🐾 Oops! Estou com alguns probleminhas técnicos. Pode tentar novamente em um minutinho?', 'bot');
+            console.error('❌ Erro no envio:', error);
         }
     }
 
     async getAIResponse(message) {
         const endpoint = this.isFirstMessage ? '/start-chat' : '/chat';
+        const url = `${this.API_URL}${endpoint}`;
         
-        const response = await fetch(endpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                message: message,
-                isFirstMessage: this.isFirstMessage
-            })
-        });
+        console.log('🌐 Enviando para:', url);
+        
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: message,
+                    isFirstMessage: this.isFirstMessage
+                })
+            });
 
-        if (!response.ok) {
-            throw new Error('Erro na resposta da API');
+            console.log('📡 Status da resposta:', response.status);
+            
+            if (!response.ok) {
+                let errorMessage = `Erro HTTP ${response.status}`;
+                try {
+                    const errorData = await response.json();
+                    errorMessage += `: ${errorData.message || 'Erro desconhecido'}`;
+                } catch (e) {
+                    errorMessage += `: ${response.statusText}`;
+                }
+                throw new Error(errorMessage);
+            }
+
+            const data = await response.json();
+            console.log('✅ Resposta recebida:', data);
+            
+            this.isFirstMessage = false;
+            return data.reply || "🐕 Não consegui entender direito. Pode reformular sua pergunta?";
+            
+        } catch (error) {
+            console.error('❌ Erro na requisição:', error);
+            
+            // Mensagens de erro amigáveis
+            if (error.message.includes('Failed to fetch')) {
+                throw new Error('Não foi possível conectar ao servidor. Verifique sua conexão.');
+            } else if (error.message.includes('404')) {
+                throw new Error('Serviço temporariamente indisponível.');
+            } else {
+                throw error;
+            }
         }
-
-        const data = await response.json();
-        this.isFirstMessage = false;
-        
-        return data.reply;
     }
 
     addMessage(content, sender) {
@@ -179,6 +213,8 @@ class PetGPT {
                 this.scrollToMessageStart(element.parentElement);
             } else {
                 clearInterval(timer);
+                // Scroll final após terminar de digitar
+                setTimeout(() => this.scrollToBottom(), 100);
             }
         }, speed);
     }
@@ -199,10 +235,16 @@ class PetGPT {
     }
 
     formatMessage(text) {
+        if (!text) return '';
+        
         return text
             .replace(/\n/g, '<br>')
             .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-            .replace(/\*(.*?)\*/g, '<em>$1</em>');
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/`(.*?)`/g, '<code>$1</code>')
+            .replace(/# (.*?)(?:\n|$)/g, '<h4>$1</h4>')
+            .replace(/- (.*?)(?:\n|$)/g, '<li>$1</li>')
+            .replace(/(?:🐾|🐕|🐈|💚|🛁|🏥|🛒)/g, '<span class="emoji">$&</span>');
     }
 
     showTypingIndicator() {
@@ -239,5 +281,36 @@ class PetGPT {
     }
 }
 
-// Inicializa o chat quando o documento carregar
-document.addEventListener('DOMContentLoaded', () => new PetGPT());
+// ✅ CONFIGURAÇÃO GLOBAL - Garante que a URL esteja disponível
+window.initializePetGPT = function() {
+    // Define a URL do backend globalmente
+    window.API_URL = window.API_URL || 
+                     import.meta.env?.VITE_API_URL || 
+                     'https://pet-net-backend.onrender.com';
+    
+    console.log('🚀 Inicializando PetGPT com URL:', window.API_URL);
+    
+    // Teste de conexão
+    fetch(`${window.API_URL}/health`)
+        .then(res => res.json())
+        .then(data => console.log('✅ Backend conectado:', data.message))
+        .catch(err => console.error('❌ Backend offline:', err));
+    
+    // Inicializa o chat
+    return new PetGPT();
+};
+
+// Inicializa automaticamente quando o DOM carregar
+document.addEventListener('DOMContentLoaded', () => {
+    window.petGPT = window.initializePetGPT();
+    
+    // Teste rápido no console
+    console.log('🐾 PetGPT pronto! Use window.petGPT para acessar.');
+    
+    // Adiciona função de teste global
+    window.testPetGPT = function(message = 'Olá') {
+        console.log('🧪 Testando PetGPT com:', message);
+        window.petGPT.chatInput.value = message;
+        window.petGPT.sendMessage();
+    };
+});

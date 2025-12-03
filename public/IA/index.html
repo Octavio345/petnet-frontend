@@ -4,8 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>petGPT</title>
-    <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <style>
+        .header-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .home-btn {
+            background: transparent;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .home-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .home-btn i {
+            font-size: 16px;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #4CAF50;
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+    </style>
 </head>
 <body>
     <div class="chat-widget">
@@ -66,6 +109,11 @@
                 this.chatHeader = document.querySelector('.chat-header');
                 this.optionButtons = document.querySelectorAll('.option-button');
                 this.welcomeContainer = document.querySelector('.welcome-container');
+                
+                // ✅ CORREÇÃO: URL DO BACKEND NO RENDER
+                this.API_URL = 'https://pet-net-backend.onrender.com';
+                
+                console.log('🚀 PetGPT inicializado com backend:', this.API_URL);
                 this.init();
             }
 
@@ -83,7 +131,6 @@
                 });
                 
                 this.chatInput.addEventListener('input', () => {
-                    // Ajusta a altura do textarea conforme o conteúdo
                     this.chatInput.style.height = 'auto';
                     this.chatInput.style.height = (this.chatInput.scrollHeight) + 'px';
                 });
@@ -102,7 +149,6 @@
                     if (this.isMinimized) this.toggleMinimize();
                 });
                 
-                // Adiciona eventos aos botões de opção
                 this.optionButtons.forEach(button => {
                     button.addEventListener('click', () => {
                         const question = button.getAttribute('data-question');
@@ -119,18 +165,8 @@
                 icon.className = this.isMinimized ? 'fas fa-plus' : 'fas fa-minus';
             }
 
-                        goToHome() {
-                // CORREÇÃO PARA REACT - volta para a página inicial do React
-                const currentPath = window.location.pathname;
-                
-                // Se estiver em /IA/index.html, volta para a raiz do React
-                if (currentPath.includes('/IA/') || currentPath.includes('/ia/')) {
-                    // Volta para a home do React (index.html na raiz)
-                    window.location.href = '/';
-                } else {
-                    // Fallback seguro
-                    window.location.href = '/';
-                }
+            goToHome() {
+                window.location.href = '/';
             }
 
             async sendMessage() {
@@ -153,41 +189,58 @@
                     this.addMessage(response, 'bot');
                 } catch (error) {
                     this.removeTypingIndicator();
-                    this.addMessage('Desculpe, estou com problemas técnicos no momento 😢', 'bot');
-                    console.error('Erro:', error);
+                    this.addMessage('🐾 Desculpe, estou com problemas técnicos no momento. Tente novamente em alguns instantes!', 'bot');
+                    console.error('❌ Erro:', error);
                 }
             }
 
             async getAIResponse(message) {
-            const baseURL = 'http://localhost:3000';
-            const endpoint = this.isFirstMessage ? "/start-chat" : "/chat";
-            
-            try {
-                const res = await fetch(baseURL + endpoint, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ 
-                        message,
-                        isFirstMessage: this.isFirstMessage 
-                    })
-                });
+                // ✅ CORREÇÃO: Usa a URL do Render
+                const endpoint = this.isFirstMessage ? '/start-chat' : '/chat';
+                const url = `${this.API_URL}${endpoint}`;
                 
-                if (!res.ok) {
-                    throw new Error(`HTTP error! status: ${res.status}`);
+                console.log('📤 Enviando para:', url);
+                
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ 
+                            message: message,
+                            isFirstMessage: this.isFirstMessage 
+                        })
+                    });
+                    
+                    console.log('📥 Status:', response.status);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    // ✅ Muda para false após primeira mensagem
+                    if (this.isFirstMessage) {
+                        this.isFirstMessage = false;
+                    }
+                    
+                    return data.reply || '🐕 Não consegui entender. Pode reformular?';
+                    
+                } catch (error) {
+                    console.error('❌ Erro na requisição:', error);
+                    
+                    // Mensagens de erro mais específicas
+                    if (error.message.includes('Failed to fetch')) {
+                        throw new Error('Não foi possível conectar ao servidor.');
+                    } else if (error.message.includes('404')) {
+                        throw new Error('Serviço temporariamente indisponível.');
+                    } else {
+                        throw error;
+                    }
                 }
-                
-                const data = await res.json();
-                
-                if (this.isFirstMessage) {
-                    this.isFirstMessage = false;
-                }
-                
-                return data.reply;
-            } catch (error) {
-                console.error('Erro na requisição:', error);
-                throw error;
             }
-        }
 
             addMessage(content, sender) {
                 const messageDiv = document.createElement('div');
@@ -216,10 +269,13 @@
             }
 
             formatMessage(text) {
+                if (!text) return '';
+                
                 return text
                     .replace(/\n/g, '<br>')
                     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                    .replace(/\*(.*?)\*/g, '<em>$1</em>');
+                    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                    .replace(/(🐾|🐕|🐈|💚|🛁|🏥|🛒)/g, '<span style="font-size: 1.2em">$1</span>');
             }
 
             showTypingIndicator() {
@@ -256,35 +312,21 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => new PetGPT());
+        // ✅ Inicializa automaticamente quando o DOM carregar
+        document.addEventListener('DOMContentLoaded', () => {
+            const petGPT = new PetGPT();
+            
+            // ✅ Torna disponível globalmente para debug
+            window.petGPT = petGPT;
+            
+            // ✅ Testa conexão com backend
+            fetch('https://pet-net-backend.onrender.com/health')
+                .then(res => res.json())
+                .then(data => console.log('✅ Backend conectado:', data.message))
+                .catch(err => console.error('❌ Backend offline:', err));
+                
+            console.log('🐾 PetGPT pronto para uso!');
+        });
     </script>
-
-    <style>
-        .header-buttons {
-            display: flex;
-            gap: 8px;
-        }
-
-        .home-btn {
-            background: transparent;
-            border: none;
-            color: #fff;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 50%;
-            transition: background-color 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .home-btn:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .home-btn i {
-            font-size: 16px;
-        }
-    </style>
 </body>
 </html>
