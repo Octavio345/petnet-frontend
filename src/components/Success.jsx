@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link, useLocation } from 'react-router-dom';
-import emailjs from 'emailjs-com';
+import emailjs from '@emailjs/browser';  // ← MUDADO AQUI
 import '../styles/Success.css';
 
 const Success = () => {
@@ -25,7 +25,7 @@ const Success = () => {
   const EMAILJS_CONFIG = {
     SERVICE_ID: 'service_id4oiie',
     TEMPLATE_ID: 'template_w20uj85',
-    USER_ID: 'VPzqmJ8n5DdUYvCU0'
+    PUBLIC_KEY: 'VPzqmJ8n5DdUYvCU0'  // ← MUDADO AQUI (era USER_ID)
   };
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const Success = () => {
         EMAILJS_CONFIG.SERVICE_ID,
         EMAILJS_CONFIG.TEMPLATE_ID,
         templateParams,
-        EMAILJS_CONFIG.USER_ID
+        EMAILJS_CONFIG.PUBLIC_KEY  // ← MUDADO AQUI
       );
 
       setEmailSent(true);
