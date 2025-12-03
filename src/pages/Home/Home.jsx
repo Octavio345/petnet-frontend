@@ -7,7 +7,7 @@ import BookingSection from '../../components/BookingSection';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import FloatingCart from '../../components/FloatingCart';
-import FloatingAi from '../../components/FloatingAi'; 
+import FloatingAI from '../../components/FloatingAi'; 
 import SloganWithCarousel from '../../components/SloganWithCarousel';
 
 const Home = ({ 
