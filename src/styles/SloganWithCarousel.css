@@ -1,0 +1,130 @@
+/* CONTAINER PRINCIPAL */
+.slogan-carousel-container {
+  width: 100%;
+  padding: 2rem 0;
+}
+
+/* WRAPPER LADO A LADO */
+.slogan-carousel-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1rem;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 2rem;
+  min-height: 600px;
+}
+
+/* LADO ESQUERDO */
+.slogan-side {
+  flex: 1;
+  max-width: 45%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 1rem;
+}
+
+/* LADO DIREITO */
+.carousel-side {
+  flex: 1;
+  max-width: 55%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: stretch;
+  background: transparent;
+}
+
+/* AUMENTAR AS IMAGENS DO CAROUSEL */
+.carousel-side .hero-carousel {
+  width: 100%;
+  height: 100% !important;
+  display: flex;
+  align-items: stretch;
+  background: transparent;
+  box-shadow: none;
+}
+
+.carousel-side .carousel,
+.carousel-side .carousel-inner,
+.carousel-side .carousel-item,
+.carousel-side .carousel-item.active {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+.carousel-side .carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  transform: scale(1);
+  background: transparent;
+}
+
+/* EVITA QUE O BOOTSTRAP CAROUSEL ESTOURE O FLEX */
+.carousel-side .hero-carousel,
+.carousel,
+.carousel-inner,
+.carousel-item,
+.carousel-item img {
+  max-width: 100% !important;
+  width: 100% !important;
+  flex-shrink: 1 !important;
+  overflow: hidden;
+}
+
+/* RESPONSIVO - CAROUSEL EM CIMA NO MOBILE */
+@media (max-width: 768px) {
+  .slogan-carousel-wrapper {
+    flex-direction: column;
+    text-align: center;
+    min-height: auto;
+    gap: 2rem;
+    padding: 0 1rem;
+  }
+
+  .slogan-side,
+  .carousel-side {
+    max-width: 100%;
+    justify-content: center;
+    padding-left: 0;
+    width: 100%;
+  }
+
+  /* CAROUSEL EM CIMA */
+  .carousel-side {
+    order: -1; /* COLOCA O CAROUSEL EM PRIMEIRO */
+    height: 400px;
+  }
+
+  /* SLOGAN EMBAIXO */
+  .slogan-side {
+    order: 1; /* COLOCA O SLOGAN EM SEGUNDO */
+    padding: 0 1rem;
+  }
+
+  .carousel-side .hero-carousel {
+    height: 400px !important;
+    margin-top: -50px;
+    margin-bottom: -100px;
+  }
+
+  .carousel-side .carousel-item img {
+    transform: scale(1); /* REMOVE aumento em mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-side {
+    height: 350px;
+  }
+
+  .carousel-side .hero-carousel {
+    height: 350px !important;
+  }
+}

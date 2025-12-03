@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>petGPT</title>
+    <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="chat-widget">
+        <div class="chat-header">
+            <div class="header-content">
+                <div class="logo"><img id="img-logo" src="imagem/retriever-dourado.gif" alt=""></div>
+                <div class="header-text">
+                    <h1>PetGPT</h1>
+                    <p>Online - Tire dúvidas sobre cuidados</p>
+                </div>
+            </div>
+            <div class="header-buttons">
+                <button class="home-btn" title="Voltar para Home">
+                    <i class="fas fa-home"></i>
+                </button>
+                <button class="minimize-btn">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="chat-messages">
+            <div class="welcome-container">
+                <h2>Olá! Seja bem-vindo(a)</h2>
+                <p>Estamos felizes em ter você conosco! 😊</p>
+                <p>Se você está procurando por algo específico ou precisa de ajuda, não hesite em perguntar. Estou aqui para ajudar! 😊</p>
+                
+                <div class="options">
+                    <div class="option-button" data-question="Quais rações vocês recomendam para filhotes?">Rações para filhotes</div>
+                    <div class="option-button" data-question="Como devo cuidar do pelo do meu pet?">Cuidados com o pelo</div>
+                    <div class="option-button" data-question="Quais brinquedos são seguros para cães?">Brinquedos seguros</div>
+                    <div class="option-button" data-question="Preciso de ajuda com banho e tosa">Banho e tosa</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chat-input-container">
+            <div class="input-wrapper">
+                <textarea class="chat-input" placeholder="Digite sua mensagem..." rows="1"></textarea>
+                <button class="send-btn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class PetGPT {
+            constructor() {
+                this.isMinimized = false;
+                this.isFirstMessage = true;
+                this.messagesContainer = document.querySelector('.chat-messages');
+                this.chatInput = document.querySelector('.chat-input');
+                this.sendButton = document.querySelector('.send-btn');
+                this.minimizeButton = document.querySelector('.minimize-btn');
+                this.homeButton = document.querySelector('.home-btn');
+                this.chatWidget = document.querySelector('.chat-widget');
+                this.chatHeader = document.querySelector('.chat-header');
+                this.optionButtons = document.querySelectorAll('.option-button');
+                this.welcomeContainer = document.querySelector('.welcome-container');
+                this.init();
+            }
+
+            init() { 
+                this.setupEventListeners(); 
+            }
+
+            setupEventListeners() {
+                this.sendButton.addEventListener('click', () => this.sendMessage());
+                this.chatInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.sendMessage();
+                    }
+                });
+                
+                this.chatInput.addEventListener('input', () => {
+                    // Ajusta a altura do textarea conforme o conteúdo
+                    this.chatInput.style.height = 'auto';
+                    this.chatInput.style.height = (this.chatInput.scrollHeight) + 'px';
+                });
+                
+                this.minimizeButton.addEventListener('click', (e) => {
+                    e.stopPropagation(); 
+                    this.toggleMinimize();
+                });
+
+                this.homeButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.goToHome();
+                });
+                
+                this.chatHeader.addEventListener('click', () => {
+                    if (this.isMinimized) this.toggleMinimize();
+                });
+                
+                // Adiciona eventos aos botões de opção
+                this.optionButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const question = button.getAttribute('data-question');
+                        this.chatInput.value = question;
+                        this.sendMessage();
+                    });
+                });
+            }
+
+            toggleMinimize() {
+                this.isMinimized = !this.isMinimized;
+                this.chatWidget.classList.toggle('minimized', this.isMinimized);
+                const icon = this.minimizeButton.querySelector('i');
+                icon.className = this.isMinimized ? 'fas fa-plus' : 'fas fa-minus';
+            }
+
+                        goToHome() {
+                // CORREÇÃO PARA REACT - volta para a página inicial do React
+                const currentPath = window.location.pathname;
+                
+                // Se estiver em /IA/index.html, volta para a raiz do React
+                if (currentPath.includes('/IA/') || currentPath.includes('/ia/')) {
+                    // Volta para a home do React (index.html na raiz)
+                    window.location.href = '/';
+                } else {
+                    // Fallback seguro
+                    window.location.href = '/';
+                }
+            }
+
+            async sendMessage() {
+                const message = this.chatInput.value.trim();
+                if (!message) return;
+                
+                if (this.welcomeContainer) {
+                    this.welcomeContainer.style.display = 'none';
+                    this.welcomeContainer = null;
+                }
+                
+                this.addMessage(message, 'user');
+                this.chatInput.value = '';
+                this.chatInput.style.height = 'auto';
+                this.showTypingIndicator();
+                
+                try {
+                    const response = await this.getAIResponse(message);
+                    this.removeTypingIndicator();
+                    this.addMessage(response, 'bot');
+                } catch (error) {
+                    this.removeTypingIndicator();
+                    this.addMessage('Desculpe, estou com problemas técnicos no momento 😢', 'bot');
+                    console.error('Erro:', error);
+                }
+            }
+
+            async getAIResponse(message) {
+            const baseURL = 'http://localhost:3000';
+            const endpoint = this.isFirstMessage ? "/start-chat" : "/chat";
+            
+            try {
+                const res = await fetch(baseURL + endpoint, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ 
+                        message,
+                        isFirstMessage: this.isFirstMessage 
+                    })
+                });
+                
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                
+                const data = await res.json();
+                
+                if (this.isFirstMessage) {
+                    this.isFirstMessage = false;
+                }
+                
+                return data.reply;
+            } catch (error) {
+                console.error('Erro na requisição:', error);
+                throw error;
+            }
+        }
+
+            addMessage(content, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}-message`;
+                
+                const avatar = document.createElement('div');
+                avatar.className = 'message-avatar';
+                avatar.innerHTML = sender === 'bot' ? '<i class="fas fa-paw"></i>' : '<i class="fas fa-user"></i>';
+                
+                const messageContent = document.createElement('div');
+                messageContent.className = 'message-content';
+                
+                const formattedContent = this.formatMessage(content);
+                messageContent.innerHTML = formattedContent;
+                
+                if (sender === 'bot') {
+                    messageDiv.appendChild(avatar);
+                    messageDiv.appendChild(messageContent);
+                } else {
+                    messageDiv.appendChild(messageContent);
+                    messageDiv.appendChild(avatar);
+                }
+                
+                this.messagesContainer.appendChild(messageDiv);
+                this.scrollToBottom();
+            }
+
+            formatMessage(text) {
+                return text
+                    .replace(/\n/g, '<br>')
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/\*(.*?)\*/g, '<em>$1</em>');
+            }
+
+            showTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'message bot-message typing-indicator';
+                typingDiv.id = 'typing-indicator';
+                
+                const avatar = document.createElement('div');
+                avatar.className = 'message-avatar';
+                avatar.innerHTML = '<i class="fas fa-paw"></i>';
+                
+                const typingContent = document.createElement('div');
+                typingContent.className = 'message-content';
+                typingContent.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>`;
+                
+                typingDiv.appendChild(avatar);
+                typingDiv.appendChild(typingContent);
+                this.messagesContainer.appendChild(typingDiv);
+                this.scrollToBottom();
+            }
+
+            removeTypingIndicator() {
+                const typingIndicator = document.getElementById('typing-indicator');
+                if (typingIndicator) typingIndicator.remove();
+            }
+
+            scrollToBottom() {
+                this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => new PetGPT());
+    </script>
+
+    <style>
+        .header-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .home-btn {
+            background: transparent;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .home-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .home-btn i {
+            font-size: 16px;
+        }
+    </style>
+</body>
+</html>

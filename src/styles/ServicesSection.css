@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&display=swap');
+
+.services-section {
+  padding: 80px 20px;
+   font-family: "DynaPuff", system-ui;
+  color: black;
+}
+
+#servicos-container {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  margin: 60px auto;
+  max-width: 1200px;
+  flex-wrap: wrap;
+}
+
+.servico-item {
+  flex: 1;
+  min-width: 300px;
+  color: black;
+  max-width: 350px;
+  text-align: center;
+  padding: 40px 30px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(242, 158, 56, 0.2);
+}
+
+.servico-item:hover {
+  transform: translateY(-10px);
+  background: var(--color-secondary);
+  box-shadow: 0 15px 35px rgba(242, 158, 56, 0.3);
+}
+
+.servico-item .img-servicos {
+  margin-bottom: 20px;
+}
+
+.servico-item .img-servicos img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+}
+
+.servico-item .titulo-descricao {
+  font-size: 22px;
+  margin: 20px 0 10px;
+}
+
+.servico-item .texto-descricao {
+  font-size: 16px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  #servicos-container {
+    gap: 30px;
+    margin: 40px auto;
+  }
+  
+  .servico-item {
+    min-width: 100%;
+    padding: 30px 20px;
+  }
+  
+  .servico-item .img-servicos img {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .servico-item .titulo-descricao {
+    font-size: 18px;
+  }
+  
+  .servico-item .texto-descricao {
+    font-size: 14px;
+  }
+}
+
+
+/* Dark Mode Services Section */
+.dark-mode .services-section {
+  background-color: #212121; /* Fundo escuro, mesmo do slogan-section */
+  color: #f1f1f1;            /* Texto claro */
+}
+
+.dark-mode .servico-item {
+  background-color: #121212; /* fundo levemente diferente para destacar cards */
+  color: #f1f1f1;
+  box-shadow: 0 8px 25px rgba(255, 168, 0, 0.2); /* sombra dourada suave */
+  border: 1px solid #222; /* borda discreta */
+}
+
+.dark-mode .servico-item:hover {
+  background: #333; /* hover mais destacado */
+  box-shadow: 0 15px 35px rgba(255, 168, 0, 0.3);
+  transform: trans  lateY(-10px);
+}
+
+.dark-mode .servico-item .titulo-descricao {
+  color: #ff9800; /* destaque do título, mesmo do slogan-cor */
+}
+
+.dark-mode .servico-item .texto-descricao {
+  color: #dcdcdc; /* descrição mais clara, igual ao subtitulo */
+}
+
+.dark-mode .titulos {
+  color: #ff9800;
+}

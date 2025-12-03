@@ -1,0 +1,134 @@
+/* ============================
+   SEÇÃO DE RESERVA COMPLETA
+   ============================ */
+.booking-section {
+  width: 100%;
+  padding: 80px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.reserva {
+  text-align: left;
+}
+
+/* Fundo lilás com duas colunas */
+#fundo-reservar-horario {
+  background: #fbd8a6;
+  border-radius: 35px;
+  padding: 60px 70px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  text-align: justify;
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* ============================
+   COLUNA ESQUERDA
+   ============================ */
+.booking-left {
+  flex: 1;
+}
+
+/* R E S E R V A — título pequeno em roxo claro */
+#ajustar-reserva {
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 6px;
+  color: #f29e38;
+  margin-bottom: 18px;
+}
+
+/* Quer reservar um horário? — título grande */
+#ajustar-titulo-reserva {
+  font-size: 2.9rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: black;
+  margin-bottom: 20px;
+}
+
+/* Parágrafo explicativo */
+#texto {
+  font-size: 1.15rem;
+  color: black;
+  max-width: 380px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+/* ============================
+   BOTÃO
+   ============================ */
+.reserva-link {
+  background: #f29e38;
+  padding: 16px 40px;
+  border-radius: 14px;
+
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 600;
+  text-decoration: none;
+
+  display: inline-block;
+
+  box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+  transition: 0.3s ease;
+}
+
+.reserva-link:hover {
+  background: #e67e22;
+  transform: translateY(-4px);
+}
+
+/* ============================
+   COLUNA DIREITA — IMAGEM
+   ============================ */
+.booking-right img {
+  width: 360px;
+  max-width: 100%;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ============================
+   RESPONSIVIDADE
+   ============================ */
+@media (max-width: 900px) {
+  #fundo-reservar-horario {
+    flex-direction: column;
+    text-align: left;
+    padding: 50px 40px;
+  }
+
+  #texto {
+    max-width: 100%;
+  }
+
+  .booking-right img {
+    width: 300px;
+  }
+
+  #ajustar-titulo-reserva {
+    font-size: 2.4rem;
+  }
+}
+
+@media (max-width: 500px) {
+  #fundo-reservar-horario {
+    padding: 40px 25px;
+  }
+
+  #ajustar-titulo-reserva {
+    font-size: 2rem;
+  }
+
+  .booking-right img {
+    width: 240px;
+  }
+}

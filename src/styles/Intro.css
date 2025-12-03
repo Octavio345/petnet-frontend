@@ -1,0 +1,52 @@
+/* A intro NÃO deve bloquear o conteúdo */
+.intro {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(255, 189, 67);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999; /* Muito alto */
+  opacity: 1;
+  transition: opacity 1s ease;
+  pointer-events: none; /* PERMITE interação com conteúdo abaixo */
+}
+
+/* Durante o fade out */
+.intro.fade-out {
+  opacity: 0;
+}
+
+/* Quando completamente invisível, remove do fluxo */
+.intro[style*="display: none"],
+.intro:not(:where(.intro.fade-out, .intro)) {
+  display: none !important;
+}
+
+/* IMPORTANTE: Garante que a intro não bloqueie renderização */
+.intro::before,
+.intro::after {
+  display: none !important;
+}
+
+.intro img {
+  animation: pulse 1.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Dark Mode Intro */
+.dark-mode .intro {
+  background-color: #212121;
+}

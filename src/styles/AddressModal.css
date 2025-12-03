@@ -1,0 +1,535 @@
+/* AddressModal.css - DESIGN MODERNO COM COR LARANJA */
+
+.address-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.address-modal-container {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(255, 107, 53, 0.2);
+  width: 100%;
+  max-width: 550px;
+  max-height: 90vh;
+  overflow: hidden;
+  animation: slideUp 0.4s ease;
+  border: 1px solid #ffe0d4;
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Header */
+.address-modal-header {
+  display: flex;
+  align-items: center;
+  padding: 24px;
+  background: linear-gradient(135deg, #ff6b35, #ff8c42);
+  color: white;
+  position: relative;
+}
+
+.address-modal-icon {
+  font-size: 2rem;
+  margin-right: 16px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.address-modal-title h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.address-modal-title p {
+  margin: 4px 0 0 0;
+  opacity: 0.95;
+  font-size: 0.9rem;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.address-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.address-modal-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+/* Content */
+.address-modal-content {
+  padding: 24px;
+  max-height: 60vh;
+  overflow-y: auto;
+  background: #fffaf7;
+}
+
+/* Form Styles */
+.address-form {
+  margin-bottom: 24px;
+}
+
+.form-group-modern {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #2d3748;
+  font-size: 0.9rem;
+}
+
+.label-icon {
+  margin-right: 8px;
+  font-size: 1.1rem;
+  color: #ff6b35;
+}
+
+.input-with-button {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.form-input-modern {
+  flex: 1;
+  padding: 14px 16px;
+  border: 2px solid #ffe0d4;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: #fffaf7;
+  color: #2d3748;
+}
+
+.form-input-modern:focus {
+  outline: none;
+  border-color: #ff6b35;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+.form-input-modern::placeholder {
+  color: #a0aec0;
+}
+
+.cep-button {
+  padding: 14px 20px;
+  background: linear-gradient(135deg, #ff6b35, #ff8c42);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+}
+
+.cep-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4);
+}
+
+.cep-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.cep-button.loading {
+  background: #ffa585;
+}
+
+.input-hint {
+  font-size: 0.8rem;
+  color: #718096;
+  margin-top: 4px;
+  display: block;
+}
+
+/* Spinner */
+.spinner-small {
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Shipping Result */
+.shipping-result {
+  background: linear-gradient(135deg, #fff0e8, #fff8f5);
+  border: 1px solid #ffd1bf;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 24px;
+  animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.shipping-success {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.success-icon {
+  font-size: 1.5rem;
+  margin-right: 12px;
+  color: #ff6b35;
+}
+
+.shipping-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.shipping-text {
+  font-weight: 600;
+  color: #7b341e;
+  margin-bottom: 4px;
+}
+
+.shipping-detail {
+  font-size: 0.85rem;
+  color: #ff6b35;
+}
+
+.shipping-values {
+  border-top: 1px solid #ffd1bf;
+  padding-top: 12px;
+}
+
+.value-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.value-item span:first-child {
+  color: #2d3748;
+}
+
+.value {
+  font-weight: 700;
+  color: #7b341e;
+  font-size: 1.1rem;
+}
+
+/* Order Summary */
+.order-summary-modern {
+  background: #fff8f5;
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid #ffe0d4;
+}
+
+.summary-title {
+  margin: 0 0 16px 0;
+  color: #2d3748;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.summary-values {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  color: #4a5568;
+}
+
+.summary-line:not(.total) {
+  border-bottom: 1px solid #ffe0d4;
+}
+
+.summary-line.total {
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding-top: 12px;
+  border-top: 2px solid #ffe0d4;
+  color: #2d3748;
+}
+
+.total-value {
+  color: #ff6b35;
+  font-size: 1.3rem;
+}
+
+/* Footer */
+.address-modal-footer {
+  display: flex;
+  gap: 12px;
+  padding: 20px 24px;
+  background: #fff8f5;
+  border-top: 1px solid #ffe0d4;
+}
+
+.btn-cancel-modern {
+  flex: 1;
+  padding: 16px 24px;
+  background: white;
+  color: #4a5568;
+  border: 2px solid #ffe0d4;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-cancel-modern:hover {
+  background: #fff8f5;
+  border-color: #ff6b35;
+  color: #ff6b35;
+  transform: translateY(-1px);
+}
+
+.btn-confirm-modern {
+  flex: 2;
+  padding: 16px 24px;
+  background: linear-gradient(135deg, #ff6b35, #ff8c42);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+}
+
+.btn-confirm-modern:not(.disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(255, 107, 53, 0.4);
+}
+
+.btn-confirm-modern:not(.disabled):active {
+  transform: translateY(0);
+}
+
+.btn-confirm-modern.disabled {
+  background: #ffc4ad;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-icon {
+  font-size: 1.2rem;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+}
+
+.btn-total {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-left: auto;
+  backdrop-filter: blur(10px);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .address-modal-container {
+    margin: 10px;
+    border-radius: 16px;
+  }
+  
+  .address-modal-header {
+    padding: 20px;
+  }
+  
+  .address-modal-content {
+    padding: 20px;
+  }
+  
+  .address-modal-footer {
+    flex-direction: column;
+  }
+  
+  .input-with-button {
+    flex-direction: column;
+  }
+  
+  .cep-button {
+    width: 100%;
+  }
+}
+
+/* Scrollbar personalizado */
+.address-modal-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.address-modal-content::-webkit-scrollbar-track {
+  background: #ffe0d4;
+  border-radius: 3px;
+}
+
+.address-modal-content::-webkit-scrollbar-thumb {
+  background: #ff6b35;
+  border-radius: 3px;
+}
+
+.address-modal-content::-webkit-scrollbar-thumb:hover {
+  background: #e55a2b;
+}
+
+/* Efeitos de brilho */
+.address-modal-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+}
+
+.btn-confirm-modern::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-confirm-modern:hover::before {
+  left: 100%;
+}
+
+/* Novos estilos para os campos de endereço */
+.address-fields {
+  margin: 20px 0;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.form-row .form-group-modern {
+  flex: 1;
+}
+
+.readonly {
+  background-color: #f8f9fa;
+  border-color: #e9ecef;
+  color: #6c757d;
+  cursor: not-allowed;
+}
+
+.input-error {
+  border-color: #dc3545 !important;
+  box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.1) !important;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Ajustes responsivos */
+@media (max-width: 480px) {
+  .form-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

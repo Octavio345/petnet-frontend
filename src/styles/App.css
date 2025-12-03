@@ -1,0 +1,150 @@
+/* Variáveis CSS */
+:root {
+  --color-primary: #f29e38;
+  --color-secondary: #f9c375;
+  --color-background: #ffffff;
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-text: #666666;
+  --color-separate: #e0e0e0;
+  --card-bg-dark: #2b2b2b;
+  --border-dark: #444444;
+}
+
+body.dark-mode {
+  background-color: #2b2b2b;
+  color: #f1f1f1;
+}
+
+/* Dark Mode */
+.dark-mode {
+  --color-background: #1e1e1e;
+  --color-text: #eeeeee;
+  --color-separate: #444444;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Animações */
+.animacao {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+.delay-btn {
+  animation-delay: 0.3s;
+}
+
+.delay-servicos {
+  animation-delay: 0.2s;
+}
+
+.delay-entrega-rapida {
+  animation-delay: 0.4s;
+}
+
+.delay-melhor-qualidade {
+  animation-delay: 0.6s;
+}
+
+.delay-opcoes {
+  animation-delay: 0.3s;
+}
+
+.delay-reserva {
+  animation-delay: 0.2s;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Títulos comuns */
+.titulos {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1rem;
+  color: var(--color-black);
+}
+
+.dark-mode .titulos {
+  color: var(--color-white);
+}
+
+.subtitulos {
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 3rem;
+  color: var(--color-text);
+}
+
+/* Switch Dark Mode */
+.switch__container {
+  position: relative;
+  display: inline-block;
+}
+
+.switch {
+  display: none;
+}
+
+.switch + label {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+  background: #ccc;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.switch + label::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 26px;
+  height: 26px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.switch:checked + label {
+  background: var(--color-primary);
+}
+
+.switch:checked + label::after {
+  transform: translateX(30px);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-only {
+    display: none !important;
+  }
+}
+

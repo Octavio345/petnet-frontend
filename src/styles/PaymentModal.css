@@ -1,0 +1,368 @@
+/* PaymentModal.css - DESIGN MELHORADO */
+.payment-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.payment-modal {
+  background: white;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.payment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1.5rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.payment-header h2 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #6b7280;
+  padding: 0.25rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.close-button:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.payment-content {
+  padding: 0 1.5rem 1.5rem;
+}
+
+.payment-summary {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.summary-header h3 {
+  margin: 0 0 1rem 0;
+  color: #374151;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.summary-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.detail-item:not(:last-child) {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.detail-item.total {
+  border-top: 2px solid #e2e8f0;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  border-bottom: none !important;
+}
+
+.label {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.value {
+  color: #374151;
+  font-weight: 500;
+}
+
+.value.price {
+  color: #f29e38;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.payment-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+
+.payment-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.pay-button {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: #009ee3;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.pay-button:hover:not(:disabled) {
+  background: #007eb5;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 158, 227, 0.3);
+}
+
+.pay-button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.pay-button.loading {
+  background: #009ee3;
+}
+
+.mp-icon {
+  font-size: 1.2rem;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.cancel-button {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  background: #6b7280;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancel-button:hover:not(:disabled) {
+  background: #4b5563;
+}
+
+.payment-security {
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.security-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  color: #0369a1;
+  font-weight: 500;
+}
+
+.security-features {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.875rem;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #475569;
+}
+
+.sandbox-info {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.sandbox-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  color: #d97706;
+  font-weight: 500;
+}
+
+.test-cards p {
+  margin: 0 0 0.5rem 0;
+  color: #92400e;
+  font-size: 0.875rem;
+}
+
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.card-item {
+  font-size: 0.8rem;
+  color: #92400e;
+}
+
+.card-item strong {
+  color: #d97706;
+}
+
+/* Responsividade */
+@media (max-width: 640px) {
+  .payment-modal {
+    width: 95%;
+    margin: 1rem;
+  }
+  
+  .payment-header {
+    padding: 1rem 1rem 0.75rem;
+  }
+  
+  .payment-content {
+    padding: 0 1rem 1rem;
+  }
+  
+  .security-features {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+/* Adicione estas classes ao seu CSS */
+.carrinho-items-list {
+  margin: 15px 0;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.carrinho-items-list h4 {
+  margin: 0 0 10px 0;
+  color: #495057;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.carrinho-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.carrinho-item:last-child {
+  border-bottom: none;
+}
+
+.item-name {
+  flex: 2;
+  font-size: 13px;
+  color: #495057;
+}
+
+.item-quantity {
+  flex: 1;
+  text-align: center;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.item-price {
+  flex: 1;
+  text-align: right;
+  font-size: 13px;
+  font-weight: 500;
+  color: #28a745;
+}
+
+.carrinho-total {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 2px solid #dee2e6;
+  text-align: right;
+  font-size: 14px;
+}
+
+.items-count {
+  background: #e9ecef;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #495057;
+}

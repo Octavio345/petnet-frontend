@@ -1,0 +1,32 @@
+#floating-icon-container {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  z-index: 1000;
+}
+
+#floating-icon-link {
+  display: block;
+  background: var(--color-primary);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(242, 158, 56, 0.4);
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+#floating-icon-link:hover {
+  transform: scale(1.1);
+  background: var(--color-secondary);
+  box-shadow: 0 6px 20px rgba(242, 158, 56, 0.6);
+}
+
+#floating-icon {
+  width: 35px;
+  height: 35px;
+  filter: brightness(0) invert(1);
+}

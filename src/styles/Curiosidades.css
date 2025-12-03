@@ -1,0 +1,65 @@
+/* Reset para garantir que nada atrapalhe */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden; /* evita scroll horizontal */
+}
+
+/* Fundo da seção grudado nas paredes */
+.curiosidades-wrapper {
+  padding-top: 120px;
+  padding-bottom: 60px;
+  width: 100%;
+  background-color:  rgba(247, 247, 247, 0.8); /* fundo azul escuro */
+}
+
+/* Card centralizado com padding interno */
+.curiosidades-wrapper .card {
+  max-width: 1200px;    /* largura máxima do form */
+  margin: 0 auto;       /* centraliza */
+  border-radius: 20px;
+  background: #ffffffcc;
+  backdrop-filter: blur(6px);
+  color: #000;
+  padding: 2rem;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .curiosidades-wrapper {
+    padding-top: 90px;
+    padding-bottom: 40px;
+  }
+
+  .curiosidades-wrapper .card {
+    padding: 1rem;
+    margin: 0 10px;
+  }
+}
+
+/* Dark Mode */
+body.dark-mode .curiosidades-wrapper {
+  background-color: #212121;
+}
+
+body.dark-mode .curiosidades-wrapper .card {
+  background: #111a3dcc;
+  color: #f1f1f1;
+}
+
+.back-to-home {
+  margin-top: 100px;
+}
+
+.back-to-home .btn {
+  border-radius: 20px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.back-to-home .btn:hover {
+  transform: translateX(-5px);
+  background-color: #007bff;
+  color: white;
+}
